@@ -7,10 +7,12 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.*
+import kotlin.math.roundToInt
 import kotlin.system.exitProcess
 
-const val DEFAULT_TEST_FILE = "/Users/Alexander/IdeaProjects/ip-addr-counter/src/main/resources/ips_uniq.txt"
-const val DEFAULT_LINES_PER_PART = 10_000 //todo сделать динамически выбираемой
+const val DEFAULT_TEST_FILE = "/Users/Alexander/IdeaProjects/ip-addr-counter/src/main/resources/ips.txt"
+const val MAX_FILES_COUNT = 6500
+const val ROWS_IN_1_GIG = 83_000_000
 
 fun main(str: Array<String>) {
     println("Start...")
@@ -26,6 +28,10 @@ fun main(str: Array<String>) {
         println("Specified file '$fileName' is not a file or does not exist. ")
         exitProcess(-1)
     }
+
+    val sizeInGigabytes = Files.size(filePath) * 1.0 / 1024 / 1024 / 1024
+    val rows = sizeInGigabytes * ROWS_IN_1_GIG
+    val defaultLinesPerPart = (rows / MAX_FILES_COUNT).roundToInt()
 
     val partitionsTmpDir = filePath.buildTmpDir("parts")
 
@@ -43,13 +49,13 @@ fun main(str: Array<String>) {
                         ?.also { l ->
                             tree.compute(l) { _, oldCount -> if (oldCount != null) oldCount + 1 else 1 }
                         }
-                } while (line != null && (++totalLine % DEFAULT_LINES_PER_PART) != 0L)
+                } while (line != null && (++totalLine % defaultLinesPerPart) != 0L)
 
                 if (tree.isNotEmpty()) {
                     partitionsTmpDir
                         .buildTmpPartitionFile(
-                            if (totalLine % DEFAULT_LINES_PER_PART == 0L) totalLine / DEFAULT_LINES_PER_PART
-                            else totalLine / DEFAULT_LINES_PER_PART + 1
+                            if (totalLine % defaultLinesPerPart == 0L) totalLine / defaultLinesPerPart
+                            else totalLine / defaultLinesPerPart + 1
                         )
                         .let { partFile -> FileOutputStream(partFile.toFile()) }
                         .bufferedWriter()
@@ -64,7 +70,7 @@ fun main(str: Array<String>) {
             } while (line != null)
         }
 
-    val partitions = partitionsTmpDir.toFile().listFiles().toList()
+    val partitions = partitionsTmpDir.toFile().listFiles()!!.toList()
 
     var uniq = 0L
 
@@ -74,7 +80,8 @@ fun main(str: Array<String>) {
         uniq++
     }
 
-    println("End: $uniq uniq ips, ${(System.currentTimeMillis() - startTime)*1.0 / 1000} sec")
+    val executionTime = (System.currentTimeMillis() - startTime) * 1.0 / 1000
+    println("End: $uniq uniq ips, $executionTime sec. For 120G ~ ${executionTime * 120} sec.")
 }
 
 private fun Path.buildTmpDir(tmpDirName: String): Path =
@@ -83,11 +90,11 @@ private fun Path.buildTmpDir(tmpDirName: String): Path =
             if (it != null) Files.createTempDirectory(it, tmpDirName)
             else Files.createTempDirectory(tmpDirName)
         }!!
-//        .apply { toFile().deleteOnExit() }
+        .apply { toFile().deleteOnExit() }
 
 private fun Path.buildTmpPartitionFile(partition: Long): Path =
     let { Files.createTempFile(it, "part_${partition}_", ".txt") }
-//        .apply { toFile().deleteOnExit() }
+        .apply { toFile().deleteOnExit() }
 
 
 private class SortingIterator(partitions: List<File>, val keyExtractor: (String) -> (String)) : Iterator<String> {
