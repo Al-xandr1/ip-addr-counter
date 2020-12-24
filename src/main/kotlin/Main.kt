@@ -5,12 +5,9 @@ import kotlin.system.exitProcess
 
 const val DEFAULT_TEST_FILE = "/Users/Alexander/IdeaProjects/ip-addr-counter/src/main/resources/ips.txt"
 const val MAX_FILES_COUNT = 6500
-const val ROWS_IN_1_GIG = 83_000_000
+const val ROWS_IN_1_GIG = 81_000_000
 
-//todo проверить после shufl
-//todo описать требования по памяти
-//todo описать примерно время выполнения
-//todo проверить на https://ecwid-vgv-storage.s3.eu-central-1.amazonaws.com/ip_addresses.zip
+//todo ускорить реализацию через распаралленивание
 
 fun main(str: Array<String>) {
     println("Start...")
