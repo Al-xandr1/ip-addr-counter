@@ -1,4 +1,4 @@
-package sbp.tcpf.mapper.cache
+package sbp.tcpf.mapper.cache.v1
 
 import java.io.BufferedReader
 import java.io.File
