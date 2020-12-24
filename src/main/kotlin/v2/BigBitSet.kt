@@ -27,7 +27,7 @@ class BigBitSet(val nbits: Long) {
         require(index in 0 until MAX_SIZE)
 
         val bucket = index / MAX_BUCKET_SIZE
-        assert(bucket in 0 until buckets.size)
+        assert(bucket in buckets.indices)
 
         val localIndex = index - bucket * MAX_BUCKET_SIZE
 
@@ -35,8 +35,6 @@ class BigBitSet(val nbits: Long) {
     }
 
     fun cardinality(): Long = buckets.sumByLong { it.cardinality().toLong() }
-
-    fun size(): Int = buckets.sumBy { it.size() }
 
     //todo MAX_TASK to implement other methods
 

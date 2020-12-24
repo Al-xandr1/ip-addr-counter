@@ -1,4 +1,4 @@
-package sbp.tcpf.mapper.cache.v1
+package v1
 
 import java.nio.file.Paths
 import kotlin.system.exitProcess

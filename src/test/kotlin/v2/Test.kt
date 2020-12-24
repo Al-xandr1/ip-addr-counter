@@ -72,19 +72,27 @@ class Test {
             println()
         }
 
+        private fun BigBitSet.testBigBitSetCardinality(expect: Long) {
+            LongRange(0, nbits - 1L).forEach { set(it) }
+            test(this.cardinality(), expect)
+        }
+
+        private fun runTestsCardinality() {
+            BigBitSet(TOTAL_IPS).testBigBitSetCardinality(TOTAL_IPS)
+            BigBitSet(Integer.MAX_VALUE.toLong()).testBigBitSetCardinality(Integer.MAX_VALUE.toLong())
+            BigBitSet(1).testBigBitSetCardinality(1)
+        }
 
         fun run() {
-//            runTestsIsIp()
-//            runTestsParseIp()
-//            runTestsToLong()
-//            runTestsToIp()
-
-            val size = TOTAL_IPS
-
-            //todo дописать
-            val bbs = BigBitSet(size)
-            LongRange(0, size - 1).forEach { bbs.set(it) }
-            println(bbs.cardinality())
+            runTestsIsIp()
+            runTestsParseIp()
+            runTestsToLong()
+            runTestsToIp()
+            runTestsCardinality()
         }
     }
+}
+
+fun main() {
+    Test.run()
 }
