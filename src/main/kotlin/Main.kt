@@ -8,6 +8,7 @@ const val MAX_FILES_COUNT = 6500
 const val ROWS_IN_1_GIG = 81_000_000
 
 //todo ускорить реализацию через распаралленивание
+//todo слишком долго... продумать альтернативную реализацию
 
 fun main(str: Array<String>) {
     println("Start...")
@@ -28,7 +29,7 @@ fun main(str: Array<String>) {
     var uniq = uniq(filePath)
     val executionTime = (System.currentTimeMillis() - startTime) * 1.0 / 1000
 
-    println("End: $uniq uniq ips, $executionTime sec. For 120G ~ ${executionTime * 120} sec.")
+    println("End. 2G file processed: $uniq uniq ips, $executionTime sec. For 120G ~ ${executionTime * 60} sec.")
 }
 
 
