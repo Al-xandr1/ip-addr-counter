@@ -29,22 +29,22 @@ class Test {
             println()
         }
 
-        private fun String.testParseIp(expect: IP?) = test(parseIp(), expect)
+        private fun String.testToIp(expect: IP?) = test(toIp(), expect)
 
-        private fun runTestsParseIp() {
+        private fun runTestsStringToIp() {
             //ips
-            "0.0.0.0".testParseIp(IP(0, 0, 0, 0))
-            "0.0.0.000".testParseIp(IP(0, 0, 0, 0))
-            "0.0.0.01".testParseIp(IP(0, 0, 0, 1))
-            "0.0.0.255".testParseIp(IP(0, 0, 0, 255))
-            "37.230.210.51".testParseIp(IP(37, 230, 210, 51))
+            "0.0.0.0".testToIp(IP(0, 0, 0, 0))
+            "0.0.0.000".testToIp(IP(0, 0, 0, 0))
+            "0.0.0.01".testToIp(IP(0, 0, 0, 1))
+            "0.0.0.255".testToIp(IP(0, 0, 0, 255))
+            "37.230.210.51".testToIp(IP(37, 230, 210, 51))
 
             //not ips
-            "0.0.0.0000".testParseIp(null)
-            "0.0.0.-1".testParseIp(null)
-            "0.0.0.256".testParseIp(null)
-            "0.0.0.d".testParseIp(null)
-            "999.0.0.0".testParseIp(null)
+            "0.0.0.0000".testToIp(null)
+            "0.0.0.-1".testToIp(null)
+            "0.0.0.256".testToIp(null)
+            "0.0.0.d".testToIp(null)
+            "999.0.0.0".testToIp(null)
             println()
         }
 
@@ -62,7 +62,7 @@ class Test {
 
         private fun Long.testToIp(expect: IP) = test(toIp(), expect)
 
-        private fun runTestsToIp() {
+        private fun runTestsLongToIp() {
             0L.testToIp(IP(0, 0, 0, 0))
             1L.testToIp(IP(0, 0, 0, 1))
             255L.testToIp(IP(0, 0, 0, 255))
@@ -85,9 +85,9 @@ class Test {
 
         fun run() {
             runTestsIsIp()
-            runTestsParseIp()
+            runTestsStringToIp()
             runTestsToLong()
-            runTestsToIp()
+            runTestsLongToIp()
             runTestsCardinality()
         }
     }

@@ -16,7 +16,7 @@ data class IP(val p1: Long, val p2: Long, val p3: Long, val p4: Long) {
 
 fun String.isIp() = this.matches(IP_REEXP)
 
-fun String.parseIp(): IP? {
+fun String.toIp(): IP? {
     if (!this.isIp()) {
         return null
     }

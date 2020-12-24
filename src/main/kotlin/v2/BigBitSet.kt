@@ -36,8 +36,6 @@ class BigBitSet(val nbits: Long) {
 
     fun cardinality(): Long = buckets.sumByLong { it.cardinality().toLong() }
 
-    //todo MAX_TASK to implement other methods
-
     companion object {
         const val MAX_SIZE = 10L * Integer.MAX_VALUE
         const val MAX_BUCKET_SIZE = Integer.MAX_VALUE
