@@ -32,19 +32,11 @@ class Test {
         private fun String.testToIp(expect: IP?) = test(toIp(), expect)
 
         private fun runTestsStringToIp() {
-            //ips
             "0.0.0.0".testToIp(IP(0, 0, 0, 0))
             "0.0.0.000".testToIp(IP(0, 0, 0, 0))
             "0.0.0.01".testToIp(IP(0, 0, 0, 1))
             "0.0.0.255".testToIp(IP(0, 0, 0, 255))
             "37.230.210.51".testToIp(IP(37, 230, 210, 51))
-
-            //not ips
-            "0.0.0.0000".testToIp(null)
-            "0.0.0.-1".testToIp(null)
-            "0.0.0.256".testToIp(null)
-            "0.0.0.d".testToIp(null)
-            "999.0.0.0".testToIp(null)
             println()
         }
 
