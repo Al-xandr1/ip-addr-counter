@@ -5,7 +5,6 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import kotlin.system.exitProcess
 
-const val DEFAULT_TEST_FILE = "/Users/Alexander/IdeaProjects/ips/ips.txt"
 const val TOTAL_IPS = 4_294_967_296L // 0..TOTAL_IPS-1 or 0.0.0.0..255.255.255.255
 val IP_REEXP =
     Regex("(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)")
@@ -17,7 +16,7 @@ fun main(str: Array<String>) {
             ?.get(0)
             ?.takeIf { it.isNotBlank() }
             ?.trim()
-            ?: DEFAULT_TEST_FILE
+            ?: throw IllegalArgumentException("File name not specified")
 
     val filePath = Paths.get(fileName)
     if (!filePath.toFile().isFile) {
@@ -27,7 +26,7 @@ fun main(str: Array<String>) {
 
     val startTime = System.currentTimeMillis()
 
-    //todo OPTIMIZE Is it possible to speed up or parallelize file reading?
+    //todo OPTIMIZE Is it possible to parallelize file reading?
     val uniq = Files.newBufferedReader(filePath).useLines { it ->
         val bbs = BigBitSet(TOTAL_IPS)
         it.iterator().forEach { s ->

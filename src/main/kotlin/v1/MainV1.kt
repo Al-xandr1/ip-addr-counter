@@ -1,6 +1,5 @@
 package v1
 
-import v2.DEFAULT_TEST_FILE
 import java.nio.file.Paths
 import kotlin.system.exitProcess
 
@@ -16,7 +15,7 @@ fun main(str: Array<String>) {
             ?.get(0)
             ?.takeIf { it.isNotBlank() }
             ?.trim()
-            ?: DEFAULT_TEST_FILE
+            ?: throw IllegalArgumentException("File name not specified")
 
     val filePath = Paths.get(fileName)
     if (!filePath.toFile().isFile) {

@@ -19,8 +19,16 @@ fun String.isIp() = this.matches(IP_REEXP)
 fun String.toIp(): IP {
     assert { isIp() }
 
-    val s = this.split('.')
-    return IP(s[0].toLong(), s[1].toLong(), s[2].toLong(), s[3].toLong())
+    val bytes = sun.net.util.IPAddressUtil.textToNumericFormatV4(this)
+    return IP(bytes[0].myToLong(), bytes[1].myToLong(), bytes[2].myToLong(), bytes[3].myToLong())
+}
+
+//todo OPTIMIZE replace arithmetic operation by bitwise
+private fun Byte.myToLong(): Long {
+    if (this < 0) {
+        return (this + 256).toLong()
+    }
+    return toLong()
 }
 
 fun IP.toLong(): Long = this.p1.shl(24) + this.p2.shl(16) + this.p3.shl(8) + this.p4

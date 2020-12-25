@@ -13,6 +13,7 @@ class Test {
             println("$this ${this.isIp()} $expect ${check(this.isIp(), expect)}")
 
         private fun runTestsIsIp() {
+            println("runTestsIsIp")
             //ips
             "0.0.0.0".testIsIp(true)
             "0.0.0.000".testIsIp(true)
@@ -32,17 +33,20 @@ class Test {
         private fun String.testToIp(expect: IP?) = test(toIp(), expect)
 
         private fun runTestsStringToIp() {
+            println("runTestsStringToIp")
             "0.0.0.0".testToIp(IP(0, 0, 0, 0))
             "0.0.0.000".testToIp(IP(0, 0, 0, 0))
             "0.0.0.01".testToIp(IP(0, 0, 0, 1))
             "0.0.0.255".testToIp(IP(0, 0, 0, 255))
             "37.230.210.51".testToIp(IP(37, 230, 210, 51))
+            "127.128.129.130".testToIp(IP(127, 128, 129, 130))
             println()
         }
 
         private fun IP.testToLong(expect: Long) = test(toLong(), expect)
 
         private fun runTestsToLong() {
+            println("runTestsToLong")
             IP(0, 0, 0, 0).testToLong(0)
             IP(0, 0, 0, 1).testToLong(1)
             IP(0, 0, 0, 255).testToLong(255)
@@ -55,6 +59,7 @@ class Test {
         private fun Long.testToIp(expect: IP) = test(toIp(), expect)
 
         private fun runTestsLongToIp() {
+            println("runTestsLongToIp")
             0L.testToIp(IP(0, 0, 0, 0))
             1L.testToIp(IP(0, 0, 0, 1))
             255L.testToIp(IP(0, 0, 0, 255))
@@ -70,6 +75,7 @@ class Test {
         }
 
         private fun runTestsCardinality() {
+            println("runTestsCardinality")
             BigBitSet(TOTAL_IPS).testBigBitSetCardinality(TOTAL_IPS)
             BigBitSet(Integer.MAX_VALUE.toLong()).testBigBitSetCardinality(Integer.MAX_VALUE.toLong())
             BigBitSet(1).testBigBitSetCardinality(1)
