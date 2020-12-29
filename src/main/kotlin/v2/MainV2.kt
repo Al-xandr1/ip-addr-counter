@@ -26,20 +26,24 @@ fun main(str: Array<String>) {
 
     val startTime = System.currentTimeMillis()
 
-    //todo OPTIMIZE Is it possible to parallelize file reading?
-    val uniq = Files.newBufferedReader(filePath).useLines { it ->
-        val bbs = BigBitSet(TOTAL_IPS)
-        it.iterator().forEach { s ->
-            try {
-                bbs.set(s.toIp().toLong())
-            } catch (e: Exception) {
-                println("$s is not an IP address")
-            }
-        }
-        val s1 = System.currentTimeMillis()
-        println("before cardinality ${s1 - startTime} millis")
-        bbs.cardinality()
-    }
+    val uniq =
+        BigBitSet(TOTAL_IPS)
+            .let {
+                //todo OPTIMIZE Parallelize file reading.
+                Files.newBufferedReader(filePath)
+                    .lines()
+                    .parallel()
+                    .forEach { s ->
+                        try {
+                            it.set(s.toIp().toLong())
+                        } catch (e: Exception) {
+                            println("$s is not an IP address")
+                        }
+                    }
+                val s1 = System.currentTimeMillis()
+                println("before cardinality ${s1 - startTime} millis")
+                it
+            }.cardinality()
 
     val executionTime = (System.currentTimeMillis() - startTime) * 1.0 / 1000
 

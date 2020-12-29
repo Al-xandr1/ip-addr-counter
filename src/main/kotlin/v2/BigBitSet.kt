@@ -1,7 +1,6 @@
 package v2
 
 import v2.BigBitSet.Companion.MAX_SIZE
-import java.util.*
 
 /**
  * @param nbits полоколичество значений в массиве. Ограничено до MAX_SIZE = 10L * Integer.MAX_VALUE
@@ -10,7 +9,7 @@ import java.util.*
 //todo OPTIMIZE replace arithmetic operation by bitwise
 class BigBitSet(val nbits: Long) {
 
-    private var buckets: List<BitSet>
+    private var buckets: List<AtomicBitSet>
 
     init {
         assert { nbits in 1..(10L * MAX_BUCKET_SIZE) }
@@ -21,7 +20,7 @@ class BigBitSet(val nbits: Long) {
         assert { bucketsNum in 1..10 }
 
         //todo OPTIMIZE optimize size of the last bucket
-        buckets = (1..bucketsNum).map { BitSet(MAX_BUCKET_SIZE) }
+        buckets = (1..bucketsNum).map { AtomicBitSet(MAX_BUCKET_SIZE) }
     }
 
     fun set(index: Long) {
